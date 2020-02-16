@@ -3,9 +3,11 @@ const glob = require('glob');
 const path = require('path');
 const db = 'mongodb://localhost/vue-mall';
 
+exports.initSchemas = () =>{
+  glob.sync(path.resolve(__dirname,'./schema/','**/*.js')).forEach(require)
+}
 exports.connect = () => {
-    glob.sync(path.resolve(__dirname, './database/schema/', '**/*.js')).forEach(require)
-let index = 0;
+    let index = 0;
   return new Promise((resolve,reject) => {
     mongoose.connect(db);
     // 链接中断
@@ -34,8 +36,8 @@ let index = 0;
 
     // 第一次连接上
     mongoose.connection.once('open',() => {
-        resolve();
-      console.log('successful')
+      resolve();
+      console.log('successful----------------')
     })
   })
 }

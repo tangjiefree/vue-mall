@@ -7,7 +7,6 @@ import router from './router';
 import axios from 'axios';
 import setAxios from './setAxios';
 
-
 setAxios();
 
 Vue.prototype.$http = axios;

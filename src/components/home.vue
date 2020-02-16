@@ -16,6 +16,7 @@ import Header from './component/Header';
 import Banner from './component/banner';
 import Floor from './component/floor';
 import HotGoods from './component/hotGoods';
+import {Url} from '../serverApi.config';
 
 export default {
   name: 'HelloWorld',
@@ -35,7 +36,7 @@ export default {
   },
   mounted() {
     /* eslint-disable */
-    this.$http.get('https://mock.yonyoucloud.com/mock/3759/mall/api/jspang')
+    this.$http.get(Url.index)
       .then(res => {
         console.log(res);
         this.bannerList = res.data.slides;

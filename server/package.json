@@ -10,7 +10,12 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "bcrypt": "^3.0.8",
+    "glob": "^7.1.6",
     "koa": "^2.11.0",
+    "koa-bodyparser": "^4.2.1",
+    "koa-router": "^8.0.8",
+    "koa2-cors": "^2.0.6",
     "mongoose": "^5.9.1"
   }
 }
