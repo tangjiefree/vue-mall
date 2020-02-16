@@ -1,0 +1,12 @@
+@import 'reset.scss';
+
+$fontSize: 37.5px;
+
+@function rem($px) {
+    @return ($px/$fontSize) + rem;
+}
+
+@mixin center {
+    display: flex;
+    justify-content: space-between;
+}

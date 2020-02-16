@@ -3,7 +3,14 @@
 import Vue from 'vue';
 import App from './App';
 import router from './router';
+// eslint-disable-next-line import/first
+import axios from 'axios';
+import setAxios from './setAxios';
 
+
+setAxios();
+
+Vue.prototype.$http = axios;
 Vue.config.productionTip = false;
 
 /* eslint-disable no-new */
