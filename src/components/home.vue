@@ -36,18 +36,19 @@ export default {
   },
   mounted() {
     /* eslint-disable */
-    this.$http.get(Url.index)
+    this.$http.get(Url.fetchall)
       .then(res => {
         console.log(res);
-        this.bannerList = res.data.slides;
-        this.middleImg = res.data.advertesPicture.PICTURE_ADDRESS;
-        this.floor1 = res.data.floor1;
-        this.floor2 = res.data.floor2;
-        this.floor3 = res.data.floor3;
-        this.floor1_title = res.data.floorName.floor1;
-        this.floor2_title = res.data.floorName.floor2;
-        this.floor3_title = res.data.floorName.floor3;
-        this.HotGoods = res.data.hotGoods;
+        const data = res.data.data;
+        this.bannerList = data.slides;
+        this.middleImg = data.advertesPicture.PICTURE_ADDRESS;
+        this.floor1 = data.floor1;
+        this.floor2 = data.floor2;
+        this.floor3 = data.floor3;
+        this.floor1_title = data.floorName.floor1;
+        this.floor2_title = data.floorName.floor2;
+        this.floor3_title = data.floorName.floor3;
+        this.HotGoods = data.hotGoods;
     });
   }
 };

@@ -9,6 +9,7 @@ const cors = require('koa2-cors');
 
 let user = require('./appApi/user.js');
 let goods = require('./appApi/goods.js');
+let category = require('./appApi/category.js');
 
 
 app.use(cors());
@@ -17,6 +18,7 @@ app.use(router.routes());
 app.use(router.allowedMethods());
 router.use('/user',user.routes());
 router.use('/goods', goods.routes());
+router.use('/category',category.routes());
 
 (async () => {
   await connect();

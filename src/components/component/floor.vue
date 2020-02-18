@@ -2,22 +2,30 @@
     <div class="floor">
         <h2 class="title">{{title}}</h2>
         <div class="up">
-            <div class="left">
-                <img :src="floor1" alt="">
-            </div>
+                <div class="left">
+                    <router-link :to="{name: 'goodsdetail', params: {goodsId: floor1_id}}">
+                        <img :src="floor1" alt="">
+                    </router-link>
+                </div>
             <div class="right">
                 <div class="upfloor">
-                    <img :src="floor2" alt="">
+                    <router-link :to="{name: 'goodsdetail', params: {goodsId: floor2_id}}">
+                        <img :src="floor2" alt="">
+                    </router-link>
                 </div>
                 <div class="downfloor">
-                    <img :src="floor3" alt="">
+                    <router-link :to="{name: 'goodsdetail', params: {goodsId: floor3_id}}">
+                        <img :src="floor3" alt="">
+                    </router-link>
                 </div>
             </div>
         </div>
         <div class="bottom">
             <ul>
                 <li v-for="(item, index) in sliceList" :key="item.goodsId">
-                    <img :src="item.image" alt="">
+                    <router-link :to="{name: 'goodsdetail', params: {goodsId: item.goodsId}}">
+                            <img :src="item.image" alt="">
+                    </router-link>
                 </li>
             </ul>
         </div>
@@ -40,16 +48,22 @@ export default {
   data() {
     return {
       floor1: '',
+      floor1_id: '',
       floor2: '',
+      floor2_id: '',
       floor3: '',
+      floor3_id: '',
       sliceList: []
     }
   },
   watch: {
     floorList() {
       this.floor1 = this.floorList[0].image;
+      this.floor1_id = this.floorList[0].goodsId;
       this.floor2 = this.floorList[1].image;
-      this.floor3 = this.floorList[3].image;
+      this.floor2_id = this.floorList[1].goodsId;
+      this.floor3 = this.floorList[2].image;
+      this.floor3_id = this.floorList[2].goodsId;
       this.sliceList = this.floorList.slice(3);
     }
   }
@@ -66,7 +80,6 @@ export default {
     }
     img {
         width: 100%;
-        height: 100%;
     }
     .up {
         display: flex;
@@ -97,7 +110,7 @@ export default {
     .bottom {
         li {
             border-bottom: 1px solid #ccc;
-            height: rem(300px);
+            // height: rem(300px);
             &:last-child {
                 border-bottom: 1px dashed pink; 
             }

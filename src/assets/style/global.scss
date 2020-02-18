@@ -6,7 +6,8 @@ $fontSize: 37.5px;
     @return ($px/$fontSize) + rem;
 }
 
-@mixin center {
+@mixin flex($dir:column ,$a:'space-betwen') {
     display: flex;
-    justify-content: space-between;
+    flex-direction: $dir;
+    justify-content: $a
 }

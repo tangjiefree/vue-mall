@@ -3,6 +3,10 @@
         <h3>热门商品</h3>
         <swiper :options="swiperOptions">
             <swiperSlide class="slides" v-for="(item, index) in hotGoods" :key="index">
+              <router-link
+                :to="{name: 'goodsdetail', params:{goodsId: item.goodsId}}"
+                tag="div"
+              >
                 <div class="image">
                     <img :src="item.image" alt="">
                 </div>
@@ -10,6 +14,7 @@
                     <span>{{item.name}}</span>
                     <span>{{item.price | FixPrice}}</span>
                 </div>
+              </router-link>
             </swiperSlide>
         </swiper>
     </div>

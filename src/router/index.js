@@ -9,8 +9,35 @@ export default new Router({
   routes: [
     {
       path: '/',
-      name: 'index',
-      component: () => import('../components/home'),
+      name: 'main',
+      redirect: '/main'
+    },
+    {
+      path: '/main',
+      name: 'main',
+      component: () => import('../components/main'),
+      children: [
+        {
+          path: '/',
+          name: 'index',
+          component: () => import('../components/home')
+        },
+        {
+          path: '/list',
+          name: 'list',
+          component: () => import('../components/list')
+        },
+        {
+          path: '/cart',
+          name: 'cart',
+          component: () => import('../components/cart')
+        },
+        {
+          path: '/center',
+          name: 'center',
+          component: () => import('../components/center')
+        }
+      ]
     },
     {
       path: '/register',
