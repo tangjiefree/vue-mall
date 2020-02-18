@@ -1,7 +1,9 @@
 <template>
     <div>
         <div>
-            <router-view></router-view>
+            <keep-alive>
+                <router-view></router-view>
+            </keep-alive>
         </div>
         <mt-tabbar fixed v-model="selected">
             <mt-tab-item id="1">

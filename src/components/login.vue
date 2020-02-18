@@ -6,13 +6,14 @@
         <div class="form">
             <mt-field label="用户名" placeholder="请输入用户名" v-model="username"></mt-field>
             <mt-field label="密码" placeholder="请输入密码" type="password" v-model="password"></mt-field>
-            <mt-button class="login" type="primary" size="large">立即登录</mt-button>
+            <mt-button class="login" @click="goLogin" type="primary" size="large">立即登录</mt-button>
         </div>
     </div>
 </template>
 
 <script>
-import {Header, Button, Field} from 'mint-ui'
+import {Header, Button, Field} from 'mint-ui';
+import { Url } from '@/serverApi.config.js';
     export default {
         name: 'login',
         components: {
@@ -26,7 +27,29 @@ import {Header, Button, Field} from 'mint-ui'
                 password: ''
             }
         },
+        mounted() {
+            console.log(this.$route)
+        },
         methods: {
+            goLogin() {
+                this.$http({
+                    method: 'post',
+                    url: Url.login,
+                    data: {
+                        userName: this.username,
+                        password: this.password
+                    }
+                })
+                .then(res => {
+                    this.$store.commit('setToken', res.msg);
+                    if(this.$route.query.redirect) {
+                        this.$router.replace({path: this.$route.query.redirect})
+                    }
+                    else {
+                        this.$router.replace({path: '/'})
+                    }
+                })
+            },
             goBack() {
                 this.$router.go(-1);
             }

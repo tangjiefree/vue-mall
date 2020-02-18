@@ -27,6 +27,10 @@
                 </mt-tab-container-item>
             </mt-tab-container>
         </section>
+        <div class="downButton">
+            <mt-button type="primary" @click="addCart">加入购物车</mt-button>
+            <mt-button type="danger" @click="buyNow">立即购买</mt-button>
+        </div>
     </div>
 </template>
 
@@ -83,6 +87,32 @@ import { Header, Button, Toast, Navbar, TabItem, TabContainer, TabContainerItem 
             // 返回上一页
             goBack() {
                 this.$router.go(-1)
+            },
+            // 加入购物车
+            addCart() {
+                this.$store.dispatch('isSave', this.goodsContent)
+                .then(() => {
+                    Toast({
+                        message: '已存在购物车',
+                        position: 'middle',
+                        duration: 2000
+                    })
+                })
+                .catch(() => {
+                    Toast({
+                        message: '添加购物车成功',
+                        position: 'middle',
+                        duration: 2000
+                    })
+                })
+            },
+            // 立即购买
+            buyNow() {
+                this.$store.dispatch('isSave', this.goodsContent)
+                .then(() => {
+                    return;
+                })
+                this.$router.push({path: '/cart'});
             }
         }
     }
@@ -117,6 +147,15 @@ import { Header, Button, Toast, Navbar, TabItem, TabContainer, TabContainerItem 
         .innerImg {
             font-size: 0;
         }
+    }
+    .downButton {
+        position: fixed;
+        background: #cc6699;
+        padding: rem(20px);
+        width: 100%;
+        bottom: 0;
+        display: flex;
+        justify-content: space-around;
     }
 }
 </style>

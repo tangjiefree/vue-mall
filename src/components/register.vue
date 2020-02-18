@@ -32,7 +32,6 @@ import { Url } from '../serverApi.config'
                 this.$router.go(-1);
             },
             regist() {
-                console.log('hrere', Url.regist,this.username)
                 this.$http({
                     url: Url.regist,
                     method: 'post',
@@ -42,13 +41,12 @@ import { Url } from '../serverApi.config'
                     }
                 })
                 .then(res => {
-                    console.log(res)
                     if(res.status) {
-                        this.$router.push('/');
                         Toast({
                         message: res.msg,
                         iconClass: 'icon icon-success'
                         });
+                        this.$router.push('/');
                     }
                     else {
                         Toast({

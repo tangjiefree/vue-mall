@@ -30,6 +30,9 @@ export default new Router({
         {
           path: '/cart',
           name: 'cart',
+          meta: {
+            requireToken: true
+          },
           component: () => import('../components/cart')
         },
         {

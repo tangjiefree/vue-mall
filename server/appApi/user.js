@@ -13,12 +13,30 @@ router.post('/register',async(ctx) => {
         }
     })
     .catch((err) => {
-        console.log(err)
         ctx.body = {
             status: false,
             msg: '注册失败'
         }
     })
+})
+
+router.post('/login', async(ctx) => {
+        const {userName, password} = ctx.request.body;
+        const userData = mongoose.model('User');
+        const result = await userData.findOne({userName: userName, password: password})
+        if(result) {
+            ctx.body = {
+                status: true,
+                msg: result
+            }
+        }
+        else {
+            ctx.body = {
+                status: false,
+                msg: '请检查用户名和密码是否正确'
+            }
+        }
+
 })
 
 module.exports = router;
