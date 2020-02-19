@@ -28,6 +28,7 @@ router.get('/alldata', async(ctx) => {
     ctx.body="插入首页数据中"
 })
 
+
 // 将商品详情存入数据库
 router.get('/goodsdetail', async(ctx) => {
     fs.readFile(path.resolve(__dirname, '../data_json/goods.json'), 'utf8', (err,data) => {

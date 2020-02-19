@@ -10,11 +10,6 @@ export default new Router({
     {
       path: '/',
       name: 'main',
-      redirect: '/main'
-    },
-    {
-      path: '/main',
-      name: 'main',
       component: () => import('../components/main'),
       children: [
         {

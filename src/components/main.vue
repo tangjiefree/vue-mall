@@ -5,53 +5,36 @@
                 <router-view></router-view>
             </keep-alive>
         </div>
-        <mt-tabbar fixed v-model="selected">
-            <mt-tab-item id="1">
-                <img slot="icon" src="../assets/images/index.png">
-                首页
-            </mt-tab-item>
-            <mt-tab-item id="2">
-                <img slot="icon" src="../assets/images/list.png">
-                商品列表
-            </mt-tab-item>
-            <mt-tab-item id="3">
-                <img slot="icon" src="../assets/images/cart.png">
-                购物车
-            </mt-tab-item>
-            <mt-tab-item id="4">
-                <img slot="icon" src="../assets/images/center.png">
-                个人中心
-            </mt-tab-item>
-        </mt-tabbar>
+        <van-tabbar v-model="active">
+            <van-tabbar-item icon="home-o">首页</van-tabbar-item>
+            <van-tabbar-item icon="hot-sale-o">商品列表</van-tabbar-item>
+            <van-tabbar-item icon="cart-o">购物车</van-tabbar-item>
+            <van-tabbar-item icon="user-o">个人中心</van-tabbar-item>
+        </van-tabbar>
     </div>
 </template>
 
 <script>
-import { Tabbar, TabItem, img } from 'mint-ui';
     export default {
         name: 'mainhome',
-        components: {
-            'mt-tabbar': Tabbar,
-            'mt-tab-item': TabItem,
-        },
         data() {
             return {
-                selected: ''
+                active: ''
             }
         },
         watch: {
-            selected(val) {
+            active(val) {
                 switch(+val) {
-                    case 1:
-                        this.$router.push({path: '/main'});
+                    case 0:
+                        this.$router.push({path: '/'});
                         break;
-                    case 2: 
+                    case 1: 
                         this.$router.push({path: '/list'});
                         break;
-                    case 3: 
+                    case 2: 
                         this.$router.push({path: '/cart'});
                         break;
-                    case 4: 
+                    case 3: 
                         this.$router.push({path: '/center'});
                         break;
                 }

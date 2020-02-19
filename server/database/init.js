@@ -1,6 +1,7 @@
 const mongoose = require('mongoose');
 const glob = require('glob');
 const path = require('path');
+// const db = 'mongodb://tjfree.xidiary.top:27017/vue-mall';
 const db = 'mongodb://localhost/vue-mall';
 
 exports.initSchemas = () =>{

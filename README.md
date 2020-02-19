@@ -1,7 +1,7 @@
 # vue-mall
 
 > 移动端小商城
-技术栈 vue全家桶+koa+mongodb+mint-ui (后期考虑ui换成vant)
+技术栈 vue全家桶+koa+mongodb+vant
 
 ## Build Setup 运行前端项目
 

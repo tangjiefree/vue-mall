@@ -1,26 +1,40 @@
 <template>
     <div class="login">
-        <mt-header fixed title="用户登录">
-            <mt-button @click="goBack" icon="back" slot="left">返回</mt-button>
-        </mt-header>
-        <div class="form">
-            <mt-field label="用户名" placeholder="请输入用户名" v-model="username"></mt-field>
-            <mt-field label="密码" placeholder="请输入密码" type="password" v-model="password"></mt-field>
-            <mt-button class="login" @click="goLogin" type="primary" size="large">立即登录</mt-button>
-        </div>
+        <van-nav-bar
+            title="用户登录"
+            left-text="返回"
+            left-arrow
+            @click-left="goBack"
+        />
+        <van-form @submit="goLogin">
+            <van-field
+                v-model="username"
+                name="用户名"
+                label="用户名"
+                placeholder="用户名"
+                :rules="[{ required: true, message: '请填写用户名' }]"
+            />
+            <van-field
+                v-model="password"
+                type="password"
+                name="密码"
+                label="密码"
+                placeholder="密码"
+                :rules="[{ required: true, message: '请填写密码' }]"
+            />
+            <div style="margin: 16px;">
+                <van-button round block type="info" native-type="submit">
+                立即登录
+                </van-button>
+            </div>
+        </van-form>
     </div>
 </template>
 
 <script>
-import {Header, Button, Field} from 'mint-ui';
 import { Url } from '@/serverApi.config.js';
     export default {
         name: 'login',
-        components: {
-            'mt-header': Header,
-            'mt-button': Button,
-            'mt-field': Field,
-        },
         data() {
             return {
                 username: '',
@@ -59,16 +73,5 @@ import { Url } from '@/serverApi.config.js';
 
 <style lang="scss" scoped>
 @import '../assets/style/global.scss';
-.login {
-    .mint-header {
-        display: flex;
-    }
-    .form {
-        margin-top: rem(150px);
-        padding: rem(20px);
-        .login {
-            margin-top: rem(100px);
-        }
-    }
-}
+
 </style>

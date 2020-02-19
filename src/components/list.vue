@@ -1,8 +1,8 @@
 <template>
   <div class="outlist">
-    <mt-header title="商品列表">
-      <mt-button icon="back" slot="left" @click="goback">返回</mt-button>
-    </mt-header>
+    <van-nav-bar
+      title="商品列表"
+    />
     <div class="list">
       <section class="category">
         <ul>
@@ -16,16 +16,13 @@
       </section>
       <section class="categorySub">
         <ul class="top">
-          <li
-            :class="subIndex === index ? 'subActive': ''"
-            v-for="(item, index) in categorySub"
+          <van-tag round :type="subIndex === index ? 'success' : 'warning'" v-for="(item, index) in categorySub"
             :key="index"
-            @click="deepSub(index, item.ID)"
-          >{{item.MALL_SUB_NAME}}</li>
+            @click="deepSub(index, item.ID)">{{item.MALL_SUB_NAME}}</van-tag>
         </ul>
-        <mt-loadmore :top-method="loadTop" :bottom-method="loadBottom" ref="loadmore">
-          <ul class="list">
-            <router-link
+        <ul class="list">
+            <van-pull-refresh success-text="刷新成功" v-model="isLoading" @refresh="loadTop">
+              <router-link
               tag="li"
               :to="{name: 'goodsdetail', params: {goodsId: item.ID}}"
               v-for="(item, index) in deepList"
@@ -40,8 +37,8 @@
                 <span>商品价格：{{item.ORI_PRICE}}元</span>
               </div>
             </router-link>
-          </ul>
-        </mt-loadmore>
+          </van-pull-refresh>
+        </ul>
       </section>
     </div>
   </div>
@@ -49,14 +46,8 @@
 
 <script>
 import { Url } from "@/serverApi.config.js";
-import { Loadmore, Toast, Header, Button } from "mint-ui";
 export default {
   name: "list",
-  components: {
-    "mt-loadmore": Loadmore,
-    "mt-header": Header,
-    "mt-button": Button
-  },
   data() {
     return {
       category: [],//大类列表
@@ -68,7 +59,8 @@ export default {
       Num: 10, //每页条数
       deepList: [],//商品列表
       errorImg: 'this.src="' + require("@/assets/images/errorimg.png") + '"',
-      deepSubID: ""
+      deepSubID: "",
+      isLoading: false
     };
   },
   mounted() {
@@ -85,11 +77,7 @@ export default {
           this.category = res.data;
           this.changeCategory(this.activeIndex, this.category[0].ID);
         } else {
-          Toast({
-            message: "获取数据失败",
-            position: "middle",
-            duration: 2000
-          });
+          Toast('获取数据失败');
         }
       });
     },
@@ -107,11 +95,7 @@ export default {
           this.categorySub = res.data;
           this.loadTop()
         } else {
-          Toast({
-            message: "获取数据失败",
-            position: "middle",
-            duration: 2000
-          });
+          Toast('获取数据失败');
         }
       });
     },
@@ -132,11 +116,7 @@ export default {
         if (res.status && res.data.length) {
           this.deepList = res.data;
         } else {
-          Toast({
-            message: "获取数据失败",
-            position: "middle",
-            duration: 2000
-          });
+          Toast('获取数据失败');
         }
       });
     },
@@ -146,7 +126,7 @@ export default {
     loadTop() {
       this.pageNum = 1;
       this.deepSub(this.subIndex, this.categorySub[this.subIndex].ID);
-      this.$refs.loadmore.onTopLoaded();
+      this.isLoading = false;
     },
     loadBottom() {}
   }
@@ -156,9 +136,6 @@ export default {
 <style lang="scss" scoped>
 @import "../assets/style/global.scss";
 .outlist {
-  .mint-header {
-    display: flex;
-  }
   .list {
     @include flex(row, space-between);
     .category {
@@ -169,30 +146,25 @@ export default {
         text-align: center;
         line-height: rem(100px);
         &.active {
-          border: 1px solid orange;
-          background: palegreen;
+          border-left: 2px solid orange;
+          // background: palegreen;
         }
       }
     }
     .categorySub {
       width: 70%;
       .top {
-        display: -webkit-box;
+        padding: rem(5px);
+        display: flex;
+        -webkit-overflow-scrolling: touch;
         overflow-x: scroll;
-        height: rem(100px);
+        height: rem(60px);
         overflow-y: hidden;
-        .subActive {
-          background: powderblue;
-        }
-        li {
-          width: rem(180px);
-          height: rem(80px);
-          border-radius: 80%;
-          line-height: rem(80px);
-          border: 1px solid orange;
-          text-align: center;
-          margin-right: rem(5px);
-        }
+      span {
+        white-space: nowrap;
+        margin-right: rem(5px);
+      }
+
       }
       .list {
         display: flex;

@@ -1,8 +1,7 @@
-// const BASE_URL = 'https://mock.yonyoucloud.com/mock/3759/mall/api/';
 const LOCAL_URL = 'http://localhost:3000/';
+// const LOCAL_URL = 'http://tjfree.xidiary.top/';
 
 exports.Url = {
-    // 'index': BASE_URL + 'jspang'
     'regist': LOCAL_URL + 'user/register', //注册接口
     'login': LOCAL_URL + 'user/login', //登陆接口
     'GoodsDetail': LOCAL_URL + 'goods/fetchdetail', //获取商品详情

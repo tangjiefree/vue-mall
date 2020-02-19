@@ -1,6 +1,8 @@
 const Koa = require('koa');
 const { connect, initSchemas } = require('./database/init.js');
 const moongse = require('mongoose');
+const static = require('koa-static');
+const path = require('path');
 const Router = require('koa-router');
 const BodyParse = require('koa-bodyparser')
 let router = new Router();
@@ -16,9 +18,13 @@ app.use(cors());
 app.use(BodyParse());
 app.use(router.routes());
 app.use(router.allowedMethods());
+app.use(static(
+  path.join(__dirname, './dist')
+))
 router.use('/user',user.routes());
 router.use('/goods', goods.routes());
 router.use('/category',category.routes());
+
 
 (async () => {
   await connect();

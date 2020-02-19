@@ -1,8 +1,11 @@
 <template>
     <div class="goodsDetail">
-        <mt-header fixed title="商品详情页面">
-            <mt-button icon="back" slot="left" @click="goBack">返回</mt-button>
-        </mt-header>
+        <van-nav-bar
+            title="商品详情页面"
+            left-text="返回"
+            left-arrow
+            @click-left="goBack"
+        />
         <section class="content">
             <img :src="goodsContent.IMAGE1" alt="" style="width: 100%;">
             <div class="detail">
@@ -14,48 +17,37 @@
             </div>
         </section>
         <section class="choice">
-            <mt-navbar v-model="selected">
-                <mt-tab-item id="1">商品详情</mt-tab-item>
-                <mt-tab-item id="2">评价</mt-tab-item>
-            </mt-navbar>
-            <mt-tab-container v-model="selected" swipeable>
-                <mt-tab-container-item id="1">
+            <van-tabs v-model="active">
+                <van-tab title="商品详情">
                     <div class="innerImg" v-html="goodsContent.DETAIL"></div>
-                </mt-tab-container-item>
-                <mt-tab-container-item id="2">
-                    <p>评论制作中</p>
-                </mt-tab-container-item>
-            </mt-tab-container>
+                </van-tab>
+                <van-tab title="评价"><p>评论制作中</p></van-tab>
+            </van-tabs>
         </section>
+
         <div class="downButton">
-            <mt-button type="primary" @click="addCart">加入购物车</mt-button>
-            <mt-button type="danger" @click="buyNow">立即购买</mt-button>
+            <van-goods-action>
+                <!-- <van-goods-action-icon icon="chat-o" text="客服" @click="onClickIcon" /> -->
+                <van-goods-action-icon icon="cart-o" text="购物车" @click="gocart" />
+                <van-goods-action-button type="warning" text="加入购物车" @click="addCart" />
+                <van-goods-action-button type="danger" text="立即购买" @click="buyNow" />
+            </van-goods-action>
         </div>
     </div>
 </template>
 
 <script>
 import { Url } from '@/serverApi.config.js';
-import { Header, Button, Toast, Navbar, TabItem, TabContainer, TabContainerItem } from 'mint-ui';
     export default {
         name: 'goodsdetail',
-        components: {
-            'mt-header': Header,
-            'mt-button': Button,
-            'mt-navbar': Navbar,
-            'mt-tab-item': TabItem,
-            'mt-tab-container': TabContainer,
-            'mt-tab-container-item': TabContainerItem
-        },
         data() {
             return {
                 goodsId: '775e575ce28a4f89b1dfe2c99eb08ae7',
                 goodsContent: {},
-                selected: '1'
+                active: '1'
             }
         },
         created() {
-            console.log(this.$route,11)
             if(this.$route.params.goodsId) {
                 this.goodsId = this.$route.params.goodsId;
             }
@@ -76,11 +68,7 @@ import { Header, Button, Toast, Navbar, TabItem, TabContainer, TabContainerItem 
                         this.goodsContent = res.msg;
                     }
                     else {
-                        Toast({
-                            message: res.msg,
-                            position: 'middle',
-                            duration: 2000
-                        })
+                        Toast(res.msg);
                     }
                 })
             },
@@ -92,18 +80,10 @@ import { Header, Button, Toast, Navbar, TabItem, TabContainer, TabContainerItem 
             addCart() {
                 this.$store.dispatch('isSave', this.goodsContent)
                 .then(() => {
-                    Toast({
-                        message: '已存在购物车',
-                        position: 'middle',
-                        duration: 2000
-                    })
+                    Toast('已存在购物车');
                 })
                 .catch(() => {
-                    Toast({
-                        message: '添加购物车成功',
-                        position: 'middle',
-                        duration: 2000
-                    })
+                    Toast('添加购物车成功');
                 })
             },
             // 立即购买
@@ -113,6 +93,10 @@ import { Header, Button, Toast, Navbar, TabItem, TabContainer, TabContainerItem 
                     return;
                 })
                 this.$router.push({path: '/cart'});
+            },
+            // gocart
+            gocart() {
+                this.$router.push({path: '/cart'});
             }
         }
     }
@@ -121,9 +105,6 @@ import { Header, Button, Toast, Navbar, TabItem, TabContainer, TabContainerItem 
 <style lang="scss" scoped>
 @import '../assets/style/global.scss';
 .goodsDetail {
-    .mint-header {
-        display: flex;
-    }
     .content {
         margin-top: 41px;
         .detail {

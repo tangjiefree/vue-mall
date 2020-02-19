@@ -1,26 +1,25 @@
 <template>
     <div class="cart">
-        <mt-header fixed title="购物车"></mt-header>
+        <van-nav-bar title="购物车" />
         <img class="default" :src="require('../assets/images/cart.jpg')" v-if="!hasGoods" alt="">
         <section class="cartlist">
             <ul>
-                <li v-for="(item, index) in cartList" :key="item.ID">
-                    <img :src="item.IMAGE1" alt="">
-                    <div class="content">
-                        <div style="width: 100%;">{{item.NAME}}</div>
-                        <div class="bottom">
-                            <div class="price">
-                                <span v-if="item.PRESENT_ORI_PRICE">原价：￥{{item.PRESENT_ORI_PRICE}}</span>
-                                <span>现卖：￥{{item.PRESENT_PRICE}}</span>
-                            </div>
-                            <div class="addNum">
-                                <span @click="delOneGoods(index)">-</span>
-                                <span>{{item.num > 0 ? item.num : 0}}</span>
-                                <span @click="addOneGoods(index)">+</span>
-                            </div>
-                        </div>
+                <van-card
+                    :num="item.num > 0 ? item.num : 0"
+                    tag="热卖"
+                    :price="item.PRESENT_PRICE"
+                    desc="描述信息"
+                    :title="item.NAME"
+                    :thumb="item.IMAGE1"
+                    :origin-price="item.PRESENT_ORI_PRICE"
+                    v-for="(item, index) in cartList" :key="item.ID"
+                >
+                    <div slot="footer" class="addNum">
+                        <span style="text-align: center;display: inline-block;width: 15px;height: 15px;border:1px solid #ccc;" @click="delOneGoods(index)">-</span>
+                        <span style="text-align: center;display: inline-block;width: 15px;height: 15px;border:1px solid #ccc;">{{item.num > 0 ? item.num : 0}}</span>
+                        <span style="text-align: center;display: inline-block;width: 15px;height: 15px;border:1px solid #ccc;" @click="addOneGoods(index)">+</span>
                     </div>
-                </li>
+                </van-card>
             </ul>
         </section>
         <section class="total"  v-if="hasGoods">
@@ -28,21 +27,17 @@
             <span>共计: {{allPrice}}元</span>
         </section>
         <section class="btnButton" v-if="hasGoods">
-            <mt-button type="danger" @click="clearCart">清空购物车</mt-button>
-            <mt-button type="primary" @click="settle">去结算</mt-button>
+            <van-button round @click="clearCart" type="info">清空购物车</van-button>
+            <van-button round @click="settle" type="warning">去结算</van-button>
         </section>
     </div>
 </template>
 
 <script>
-import { Header, Button, Toast, MessageBox } from 'mint-ui';
+import { Dialog } from 'vant';
 import { mapState, mapGetters } from 'vuex';
     export default {
         name: 'cart',
-        components: {
-            'mt-header': Header,
-            'mt-button': Button
-        },
         data() {
             return {
                 
@@ -69,16 +64,17 @@ import { mapState, mapGetters } from 'vuex';
                 this.$store.commit('clearGoods')
             },
             settle() {
-                Toast({
-                    message: "开发中",
-                    position: "middle",
-                    duration: 2000
-                });
+                Toast('开发中');
             },
             delOneGoods(index) {
                 if(this.cartList[index].num === 1) {
-                    MessageBox.confirm('不要这个商品了?').then(action => {
+                    Dialog.confirm({
+                        message: '不要这个商品了?'
+                    }).then(() => {
                         this.$store.commit('clearItem', index)
+                    }).catch(() => {
+                        // on cancel
+                        return;
                     });
                 }
                 else {
@@ -96,9 +92,6 @@ import { mapState, mapGetters } from 'vuex';
 @import '../assets/style/global.scss';
 .cart {
     position: relative;
-    .mint-header {
-        display: flex;
-    }
     .default {
         position: absolute;
         width: 100%;
@@ -110,38 +103,6 @@ import { mapState, mapGetters } from 'vuex';
     .cartlist {
         margin-top: 40px;
         padding: rem(20px);
-        li {
-            display: flex;
-            border: 1px dashed #666;
-            border-radius: rem(20px);
-            overflow: hidden;
-            margin-bottom: rem(5px);
-            img {
-                width: rem(200px);
-            }
-            .content {
-                display: flex;
-                flex-direction: column;
-                align-items: center;
-                justify-content: space-around;
-                width: 100%;
-                padding: 0 rem(30px);
-                .bottom {
-                    width:100%;
-                    display: flex;
-                    justify-content: space-between;
-                    .addNum {
-                        display: flex;
-                        text-align: center;
-                        span {
-                            width: rem(50px);
-                            width: rem(50px);
-                            border:1px solid #ccc;
-                        }
-                    }
-                }
-            }
-        }
     }
     .total {
         padding: rem(30px);
@@ -152,7 +113,7 @@ import { mapState, mapGetters } from 'vuex';
     .btnButton {
         display: flex;
         justify-content: flex-end;
-        .mint-button {
+        .van-button {
             margin-right: rem(10px);
         }
     }
