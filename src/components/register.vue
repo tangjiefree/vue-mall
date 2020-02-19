@@ -78,9 +78,6 @@ import { Url } from '../serverApi.config'
 <style lang="scss" scoped>
 @import '../assets/style/global.scss';
 .register {
-    .mint-header {
-        display: flex;
-    }
     .form {
         margin-top: rem(150px);
         padding: rem(20px);

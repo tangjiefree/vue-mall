@@ -122,9 +122,6 @@ import { Url } from '@/serverApi.config.js';
     }
     .choice {
         border-top: 1px solid #ccc;
-        .mint-navbar {
-            margin-bottom: rem(5px);
-        }
         .innerImg {
             font-size: 0;
         }
