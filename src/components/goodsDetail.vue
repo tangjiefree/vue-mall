@@ -24,13 +24,20 @@
                 <van-tab title="评价"><p>评论制作中</p></van-tab>
             </van-tabs>
         </section>
-
+        <van-sku
+            v-model="show"
+            :sku="sku"
+            :goods="goods"
+            ref="updetail"
+            @buy-clicked="buyNow"
+            @add-cart="addCart"
+        />
         <div class="downButton">
             <van-goods-action>
                 <!-- <van-goods-action-icon icon="chat-o" text="客服" @click="onClickIcon" /> -->
                 <van-goods-action-icon icon="cart-o" text="购物车" @click="gocart" />
-                <van-goods-action-button type="warning" text="加入购物车" @click="addCart" />
-                <van-goods-action-button type="danger" text="立即购买" @click="buyNow" />
+                <van-goods-action-button type="warning" text="加入购物车" @click="openDetail" />
+                <van-goods-action-button type="danger" text="立即购买" @click="openDetail" />
             </van-goods-action>
         </div>
     </div>
@@ -38,18 +45,44 @@
 
 <script>
 import { Url } from '@/serverApi.config.js';
+import { Toast } from 'vant';
     export default {
         name: 'goodsdetail',
         data() {
             return {
                 goodsId: '',
                 goodsContent: {},
-                active: '1'
+                active: '1',
+                show: false,
+                goods: {
+                // 默认商品 sku 缩略图
+                    picture: 'https://img.yzcdn.cn/1.jpg'
+                },
             }
         },
         created() {
             if(this.$route.params.goodsId) {
                 this.goodsId = this.$route.params.goodsId;
+            }
+        },
+        computed: {
+            sku() {
+                return {
+                    tree: [
+                    ],
+                    // 所有 sku 的组合列表，比如红色、M 码为一个 sku 组合，红色、S 码为另一个组合
+                    list: [
+                        {
+                        id: this.goodsId, // skuId，下单时后端需要
+                        price: this.goodsContent.PRESENT_PRICE*100, // 价格（单位分）
+                        stock_num: this.goodsContent.AMOUNT // 当前 sku 组合对应的库存
+                        }
+                    ],
+                    price: this.goodsContent.PRESENT_PRICE, // 默认价格（单位元）
+                    stock_num: this.goodsContent.AMOUNT, // 商品总库存
+                    none_sku: true, // 是否无规格商品
+                    hide_stock: false // 是否隐藏剩余库存
+                }
             }
         },
         mounted() {
@@ -66,6 +99,9 @@ import { Url } from '@/serverApi.config.js';
                     console.log(res)
                     if(res.status === 200) {
                         this.goodsContent = res.msg;
+                        this.goods.picture = res.msg.IMAGE1;
+                        this.sku.list.price = res.msg.PRESENT_PRICE;
+                        this.sku.list.stock_num = res.msg.AMOUNT;
                     }
                     else {
                         Toast(res.msg);
@@ -78,7 +114,10 @@ import { Url } from '@/serverApi.config.js';
             },
             // 加入购物车
             addCart() {
-                this.$store.dispatch('isSave', this.goodsContent)
+                this.show = true;
+                console.log(this.$refs.updetail)
+                let num = this.$refs.updetail.selectedNum;
+                this.$store.dispatch('isSave', Object.assign(this.goodsContent,{num}))
                 .then(() => {
                     Toast('已存在购物车');
                 })
@@ -86,9 +125,13 @@ import { Url } from '@/serverApi.config.js';
                     Toast('添加购物车成功');
                 })
             },
+            openDetail() {
+                this.show = true;
+            },
             // 立即购买
             buyNow() {
-                this.$store.dispatch('isSave', this.goodsContent)
+                let num = this.$refs.updetail.selectedNum;
+                this.$store.dispatch('isSave', Object.assign(this.goodsContent,{num}))
                 .then(() => {
                     return;
                 })

@@ -7,8 +7,8 @@ import router from './router';
 import axios from 'axios';
 import setAxios from './setAxios';
 import store from './store';
-import { Icon, NavBar, Search, Tabbar, TabbarItem, Tab, Tabs, GoodsAction, GoodsActionIcon, GoodsActionButton, Toast, Tag, PullRefresh, Card, Stepper, Button, CellGroup, Cell, Form, Field, Image, List } from 'vant';
-Vue.use(Icon).use(NavBar).use(Search).use(Tabbar).use(TabbarItem).use(Tab).use(Tabs).use(GoodsAction).use(GoodsActionIcon).use(GoodsActionButton).use(Toast).use(Tag).use(PullRefresh).use(Card).use(Stepper).use(Button).use(Cell).use(CellGroup).use(Form).use(Field).use(Image).use(List);
+import { Icon, NavBar, Search, Tabbar, TabbarItem, Tab, Tabs, GoodsAction, GoodsActionIcon, GoodsActionButton, Toast, Tag, PullRefresh, Card, Stepper, Button, CellGroup, Cell, Form, Field, Image, List, Sku } from 'vant';
+Vue.use(Icon).use(NavBar).use(Search).use(Tabbar).use(TabbarItem).use(Tab).use(Tabs).use(GoodsAction).use(GoodsActionIcon).use(GoodsActionButton).use(Tag).use(PullRefresh).use(Card).use(Stepper).use(Button).use(Cell).use(CellGroup).use(Form).use(Field).use(Image).use(List).use(Sku);
 
 setAxios();
 

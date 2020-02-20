@@ -6,7 +6,7 @@ Vue.use(Vuex);
 const store = new Vuex.Store({
     state: {
         count: '',
-        cartList: [],
+        cartList: JSON.parse(localStorage.getItem('cartList')) || [],
         token: '',
     },
     getters: {
@@ -40,7 +40,8 @@ const store = new Vuex.Store({
         },
         // 增加商品到购物车
         addGoods(state, value) {
-            state.cartList.push(value)
+            state.cartList.push(value);
+            localStorage.setItem('cartList', JSON.stringify(state.cartList))
         },
         // 减少商品个数
         delOneGoods(state, index) {
@@ -76,8 +77,6 @@ const store = new Vuex.Store({
                 }
                 else {
                     // 不存在,那就增加到购物车
-                    // value.num = 1;
-                    Vue.set(value,'num',1);
                     store.commit('addGoods',value);
                     reject();
                 }
