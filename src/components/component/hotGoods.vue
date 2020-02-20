@@ -12,7 +12,7 @@
                 </div>
                 <div class="des">
                     <span>{{item.name}}</span>
-                    <span>{{item.price | FixPrice}}</span>
+                    <span>￥{{item.price | FixPrice}}元</span>
                 </div>
               </router-link>
             </swiperSlide>
@@ -60,16 +60,20 @@ export default {
         padding: rem(20px) rem(30px);
     }
     .slides {
-        height: rem(400px);
+        height: rem(470px);
         img {
             width: 100%;
             height: 100%;
         }
         .des {
-            font-size: rem(12px);
+            font-size: rem(30px);
             display: flex;
+            white-space: pre-wrap;
             flex-direction: column;
             text-align: center;
+            span:last-child {
+              color:orangered;
+            }
         }
     }
 }

@@ -20,23 +20,30 @@
             :key="index"
             @click="deepSub(index, item.ID)">{{item.MALL_SUB_NAME}}</van-tag>
         </ul>
-        <ul class="list">
+        <ul class="goodslist">
             <van-pull-refresh success-text="刷新成功" v-model="isLoading" @refresh="loadTop">
-              <router-link
-              tag="li"
-              :to="{name: 'goodsdetail', params: {goodsId: item.ID}}"
-              v-for="(item, index) in deepList"
-              :key="index"
-            >
-              <img :onerror="errorImg" :src="item.IMAGE1" alt />
-              <div>
-                <span>{{item.NAME}}</span>
-              </div>
-              <div class="price">
-                <span>库存：{{item.AMOUNT}}</span>
-                <span>商品价格：{{item.ORI_PRICE}}元</span>
-              </div>
-            </router-link>
+              <van-list
+                v-model="loading"
+                :finished="finished"
+                finished-text="没有更多了"
+                @load="onLoad"
+              >
+                <router-link
+                  tag="li"
+                  :to="{name: 'goodsdetail', params: {goodsId: item.ID}}"
+                  v-for="(item, index) in deepList"
+                  :key="index"
+                >
+                  <img :onerror="errorImg" :src="item.IMAGE1" alt />
+                  <div class="name">
+                    <span>{{item.NAME}}</span>
+                  </div>
+                  <div class="price">
+                    <span>库存：{{item.AMOUNT}}</span>
+                    <span>￥{{item.ORI_PRICE}}元</span>
+                  </div>
+                </router-link>
+              </van-list>
           </van-pull-refresh>
         </ul>
       </section>
@@ -60,11 +67,17 @@ export default {
       deepList: [],//商品列表
       errorImg: 'this.src="' + require("@/assets/images/errorimg.png") + '"',
       deepSubID: "",
-      isLoading: false
+      isLoading: false,
+      loading: false,
+      finished: false
     };
   },
   mounted() {
     this.getCategory();
+    let deviceHeight = document.documentElement.clientHeight;
+    let topHeight = document.querySelector('.top').clientHeight;
+    document.querySelector('.goodslist').style.height = deviceHeight - 46 - topHeight - 50 + 'px';
+    console.log('herer')
   },
   methods: {
     // 获取所有大类信息
@@ -83,6 +96,7 @@ export default {
     },
     // 点击大类获取小类信息
     changeCategory(index, ID) {
+      this.pageNum = 1;
       this.activeIndex = index;
       this.$http({
         url: Url.categorySub,
@@ -107,7 +121,7 @@ export default {
         url: Url.deepSub,
         method: "post",
         data: {
-          pageNum: this.pageNum,
+          pageNum: this.pageNum++,
           Num: this.Num,
           ID: ID
         }
@@ -128,7 +142,11 @@ export default {
       this.deepSub(this.subIndex, this.categorySub[this.subIndex].ID);
       this.isLoading = false;
     },
-    loadBottom() {}
+    onLoad() {
+      this.deepSub(this.subIndex, this.deepSubID)
+      this.loading = false;
+      this.finished = true;
+    }
   }
 };
 </script>
@@ -136,23 +154,26 @@ export default {
 <style lang="scss" scoped>
 @import "../assets/style/global.scss";
 .outlist {
+  // font-size: rem(24px);
   .list {
     @include flex(row, space-between);
     .category {
-      width: 30%;
+      width: 25%;
       li {
         background: #fff;
+        font-size: rem(36px);
         height: rem(100px);
         text-align: center;
         line-height: rem(100px);
+        box-sizing: border-box;
         &.active {
-          border-left: 2px solid orange;
+          border-left: 5px solid orange;
           // background: palegreen;
         }
       }
     }
     .categorySub {
-      width: 70%;
+      width: 75%;
       .top {
         padding: rem(5px);
         display: flex;
@@ -161,28 +182,40 @@ export default {
         height: rem(60px);
         overflow-y: hidden;
       span {
+        font-size: rem(36px);
         white-space: nowrap;
-        margin-right: rem(5px);
+        margin-right: rem(15px);
       }
 
       }
-      .list {
+      .goodslist {
         display: flex;
         flex-direction: column;
         li {
           display: flex;
+          padding-right: rem(20px);
           align-items: center;
-          font-size: rem(12px);
+          font-size: rem(24px);
           img {
             width: rem(200px);
             height: 100%;
+          }
+          .name {
+            flex: 1;
+            font-size: rem(36px);
+            white-space: pre-wrap;
           }
           .price {
             display: flex;
             flex-direction: column;
             justify-content: space-between;
             span {
+              font-size: rem(24px);
               white-space: nowrap;
+            }
+            span:last-child {
+              font-size: rem(35px);
+              color:#f55814
             }
           }
         }

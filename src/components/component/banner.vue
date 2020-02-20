@@ -46,7 +46,7 @@ export default {
 <style lang="scss" scoped>
 @import '../../assets/style/global.scss';
 .swiper {
-    height: rem(400px);
+    height: rem(430px);
     text-align: center;
     img {
         width: 100%;

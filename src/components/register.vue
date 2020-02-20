@@ -56,17 +56,11 @@ import { Url } from '../serverApi.config'
                 })
                 .then(res => {
                     if(res.status) {
-                        Toast({
-                        message: res.msg,
-                        iconClass: 'icon icon-success'
-                        });
+                        Toast('注册成功')
                         this.$router.push('/');
                     }
                     else {
-                        Toast({
-                            message: res.msg,
-                            iconClass: 'icon icon-faild'
-                        })
+                        Toast('注册失败')
                     }
                 })
 

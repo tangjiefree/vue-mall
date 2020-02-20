@@ -1,4 +1,6 @@
-const LOCAL_URL = 'http://localhost:3000/';
+// const LOCAL_URL = 'http://localhost:3000/';
+const LOCAL_URL = 'http://192.168.0.10:3000/';
+// const LOCAL_URL = 'http://tjfree.xidiary.top:3000/';
 // const LOCAL_URL = 'http://tjfree.xidiary.top/';
 
 exports.Url = {

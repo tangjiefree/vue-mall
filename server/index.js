@@ -9,9 +9,9 @@ let router = new Router();
 const app = new Koa();
 const cors = require('koa2-cors');
 
-let user = require('./appApi/user.js');
-let goods = require('./appApi/goods.js');
-let category = require('./appApi/category.js');
+let user = require(path.resolve(__dirname, './appApi/user.js'));
+let goods = require(path.resolve(__dirname, './appApi/goods.js'));
+let category = require(path.resolve(__dirname, './appApi/category.js'));
 
 
 app.use(cors());

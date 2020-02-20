@@ -5,8 +5,6 @@ const fs = require('fs');
 const router = new Router();
 
 
-let goodsDetail = []
-
 // 将所有数据存入数据库
 router.get('/alldata', async(ctx) => {
     fs.readFile(path.resolve(__dirname, '../data_json/alldata.json'), 'utf8',(err,data) => {
@@ -31,22 +29,20 @@ router.get('/alldata', async(ctx) => {
 
 // 将商品详情存入数据库
 router.get('/goodsdetail', async(ctx) => {
-    fs.readFile(path.resolve(__dirname, '../data_json/goods.json'), 'utf8', (err,data) => {
-        if(!err) {
-            goodsDetail = JSON.parse(data);
-            let goodsSchema = mongoose.model('Goods');
-            goodsDetail.RECORDS.map((item, index) => {
-                let newInsert = new goodsSchema(item);
-                newInsert.save().then((err) => {
-                    if(!err) {
-                        console.log('插入成功')
-                    }
-                    else {
-                        // console.log(err)
-                    }
-                })
+    fs.readFile(path.resolve(__dirname, '../data_json/goodsDetail.json'), 'utf8', (err,data) => {
+        data = JSON.parse(data);
+        let goodsSchema = mongoose.model('Goods');
+        data.map((item, index) => {
+            let newInsert = new goodsSchema(item);
+            newInsert.save().then((err) => {
+                if(!err) {
+                    console.log('插入成功')
+                }
+                else {
+                    console.log(err)
+                }
             })
-        }
+        })
     })
     ctx.body = '正在插入数据...';
 })
@@ -107,21 +103,21 @@ router.get('/fetchall', async(ctx) => {
 })
 
 router.post('/fetchdetail', async(ctx) => {
-    let goodsId = ctx.request.body.goodsId;
-    const Goods = mongoose.model('Goods');
-    await Goods.findOne({ID: goodsId})
-    .then(res => {
+    try {
+        let goodsId = ctx.request.body.goodsId;
+        const Goods = mongoose.model('Goods');
+        let result = await Goods.findOne({ID: goodsId}).exec();
         ctx.body = {
             status: 200,
-            msg: res
+            msg: result
         }
-    })
-    .catch((res) => {
+    }
+    catch(err) {
         ctx.body = {
             status: 500,
-            msg: res
+            msg: err
         }
-    })
+    }
 })
 
 module.exports = router;

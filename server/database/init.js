@@ -1,14 +1,14 @@
 const mongoose = require('mongoose');
 const glob = require('glob');
 const path = require('path');
-// const db = 'mongodb://tjfree.xidiary.top:27017/vue-mall';
+// const db = 'mongodb://tjfree:123456@tjfree.xidiary.top:27017/vue-mall';
 const db = 'mongodb://localhost/vue-mall';
 
 exports.initSchemas = () =>{
   glob.sync(path.resolve(__dirname,'./schema/','**/*.js')).forEach(require)
 }
 exports.connect = () => {
-    let index = 0;
+  let index = 0;
   return new Promise((resolve,reject) => {
     mongoose.connect(db);
     // 链接中断

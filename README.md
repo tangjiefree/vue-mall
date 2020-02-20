@@ -2,7 +2,7 @@
 
 > 移动端小商城
 技术栈 vue全家桶+koa+mongodb+vant
-
+线上地址：http://tjfree.xidiary.top/
 ## Build Setup 运行前端项目
 
 ``` bash
