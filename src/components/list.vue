@@ -22,12 +22,6 @@
         </ul>
         <ul class="goodslist">
             <van-pull-refresh success-text="刷新成功" v-model="isLoading" @refresh="loadTop">
-              <van-list
-                v-model="loading"
-                :finished="finished"
-                finished-text="没有更多了"
-                @load="onLoad"
-              >
                 <router-link
                   tag="li"
                   :to="{name: 'goodsdetail', params: {goodsId: item.ID}}"
@@ -43,7 +37,6 @@
                     <span>￥{{item.ORI_PRICE}}元</span>
                   </div>
                 </router-link>
-              </van-list>
           </van-pull-refresh>
         </ul>
       </section>
@@ -69,16 +62,17 @@ export default {
       errorImg: 'this.src="' + require("@/assets/images/errorimg.png") + '"',
       deepSubID: "",
       isLoading: false,
-      loading: false,
-      finished: false
     };
   },
+  created() {
+    },
   mounted() {
     this.getCategory();
+    // 设置容器高度
     let deviceHeight = document.documentElement.clientHeight;
     let topHeight = document.querySelector('.top').clientHeight;
-    document.querySelector('.goodslist').style.height = deviceHeight - 46 - topHeight - 50 + 'px';
-    console.log('herer')
+    let goodsClient = deviceHeight - 46 - topHeight - 50;
+    document.querySelector('.goodslist').style.height = goodsClient + 'px';
   },
   methods: {
     // 获取所有大类信息
@@ -98,6 +92,7 @@ export default {
     // 点击大类获取小类信息
     changeCategory(index, ID) {
       this.pageNum = 1;
+      this.deepList = [];
       this.activeIndex = index;
       this.$http({
         url: Url.categorySub,
@@ -108,7 +103,7 @@ export default {
       }).then(res => {
         if (res.status) {
           this.categorySub = res.data;
-          this.loadTop()
+          this.deepSub(0,this.categorySub[0].ID)
         } else {
           Toast('获取数据失败');
         }
@@ -117,6 +112,7 @@ export default {
     // 点击小类获取小类商品信息
     deepSub(index, ID) {
       this.subIndex = index;
+      this.deepList = [];
       this.deepSubID = ID;
       this.$http({
         url: Url.deepSub,
@@ -129,7 +125,8 @@ export default {
       }).then(res => {
         console.log(res);
         if (res.status && res.data.length) {
-          this.deepList = res.data;
+          this.deepList = this.deepList.concat(res.data);
+          this.isdown = false;
         } else {
           Toast('获取数据失败');
         }
@@ -143,11 +140,6 @@ export default {
       this.deepSub(this.subIndex, this.categorySub[this.subIndex].ID);
       this.isLoading = false;
     },
-    onLoad() {
-      this.deepSub(this.subIndex, this.deepSubID)
-      this.loading = false;
-      this.finished = true;
-    }
   }
 };
 </script>
@@ -190,8 +182,9 @@ export default {
 
       }
       .goodslist {
-        display: flex;
-        flex-direction: column;
+        // display: flex;
+        // flex-direction: column;
+        overflow-y: scroll;
         li {
           display: flex;
           padding-right: rem(20px);

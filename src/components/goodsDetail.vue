@@ -26,6 +26,7 @@
         </section>
         <van-sku
             v-model="show"
+            :close-on-click-overlay="true"
             :sku="sku"
             :goods="goods"
             ref="updetail"
@@ -46,6 +47,7 @@
 <script>
 import { Url } from '@/serverApi.config.js';
 import { Toast } from 'vant';
+import { mapState } from 'vuex';
     export default {
         name: 'goodsdetail',
         data() {
@@ -66,6 +68,9 @@ import { Toast } from 'vant';
             }
         },
         computed: {
+            ...mapState({
+                isLogin: 'token'
+            }),
             sku() {
                 return {
                     tree: [
@@ -89,6 +94,17 @@ import { Toast } from 'vant';
             this.getDetail();
         },
         methods: {
+            // 封装是否登录状态
+            isLoginStatus() {
+                return new Promise((resolve, reject) => {
+                    if(this.isLogin) {
+                        resolve();
+                    }
+                    else {
+                        reject();
+                    }
+                })
+            },
             getDetail() {
                 this.$http({
                     method: 'post',
@@ -114,24 +130,39 @@ import { Toast } from 'vant';
             },
             // 加入购物车
             addCart() {
-                this.show = true;
-                console.log(this.$refs.updetail)
-                let num = this.$refs.updetail.selectedNum;
-                this.$store.dispatch('isSave', Object.assign(this.goodsContent,{num}))
+                this.isLoginStatus()
                 .then(() => {
-                    Toast('已存在购物车');
+                    this.show = true;
+                    console.log(this.$refs.updetail)
+                    let num = this.$refs.updetail.selectedNum;
+                    this.$set(this.goodsContent, 'num', num)
+                    console.log(this.goodsContent)
+                    this.$store.dispatch('isSave', this.goodsContent)
+                    .then(() => {
+                        Toast('已存在购物车');
+                    })
+                    .catch(() => {
+                        Toast('添加购物车成功');
+                    })
                 })
                 .catch(() => {
-                    Toast('添加购物车成功');
+                    Toast('请先登录');
                 })
             },
             openDetail() {
-                this.show = true;
+                this.isLoginStatus()
+                .then(() => {
+                    this.show = true;
+                })
+                .catch(() => {
+                    Toast('请先登录');
+                })
             },
             // 立即购买
             buyNow() {
                 let num = this.$refs.updetail.selectedNum;
-                this.$store.dispatch('isSave', Object.assign(this.goodsContent,{num}))
+                this.$set(this.goodsContent, 'num', num)
+                this.$store.dispatch('isSave', this.goodsContent)
                 .then(() => {
                     return;
                 })
@@ -139,7 +170,13 @@ import { Toast } from 'vant';
             },
             // gocart
             gocart() {
-                this.$router.push({path: '/cart'});
+                this.isLoginStatus()
+                .then(() => {
+                    this.$router.push({path: '/cart'});
+                })
+                .catch(() => {
+                    Toast('请先登录')
+                })
             }
         }
     }

@@ -24,7 +24,7 @@
         </section>
         <section class="total"  v-if="hasGoods">
             <span>总共:{{allTotal}}件</span>
-            <span>共计: {{allPrice}}元</span>
+            <span>共计: {{allPrice | newPrice}}元</span>
         </section>
         <section class="btnButton" v-if="hasGoods">
             <van-button round @click="clearCart" type="info">清空购物车</van-button>
@@ -34,13 +34,19 @@
 </template>
 
 <script>
-import { Dialog } from 'vant';
+import { Dialog, Toast } from 'vant';
 import { mapState, mapGetters } from 'vuex';
+import { PriceFix } from '../utils/filter';
     export default {
         name: 'cart',
         data() {
             return {
                 
+            }
+        },
+        filters: {
+            newPrice(val) {
+                return PriceFix(val);
             }
         },
         computed: {
@@ -61,10 +67,18 @@ import { mapState, mapGetters } from 'vuex';
         },
         methods: {
             clearCart() {
-                this.$store.commit('clearGoods')
+                Dialog.confirm({
+                    message: '确定清空购物车？'
+                })
+                .then(() => {
+                    this.$store.commit('clearGoods')
+                })
+                .catch(() => {
+                    return;
+                })
             },
             settle() {
-                Toast('开发中');
+                Toast('开发中,敬请期待');
             },
             delOneGoods(index) {
                 if(this.cartList[index].num === 1) {
@@ -101,8 +115,9 @@ import { mapState, mapGetters } from 'vuex';
         transform: translate(-50%, -50%);
     }
     .cartlist {
-        margin-top: 40px;
-        padding: rem(20px);
+        padding: 0 rem(20px);
+        height: 80%;
+        overflow-y: scroll;
     }
     .total {
         padding: rem(30px);

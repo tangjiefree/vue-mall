@@ -33,6 +33,7 @@
 
 <script>
 import { Url } from '../serverApi.config'
+import { Toast } from 'vant';
     export default {
         name: 'register',
         data() {

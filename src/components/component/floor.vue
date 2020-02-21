@@ -24,7 +24,7 @@
             <ul>
                 <li v-for="(item, index) in sliceList" :key="item.goodsId">
                     <router-link :to="{name: 'goodsdetail', params: {goodsId: item.goodsId}}">
-                            <img :src="item.image" alt="">
+                        <img :src="item.image" alt="">
                     </router-link>
                 </li>
             </ul>
@@ -107,12 +107,19 @@ export default {
             }
         }
     }
-    .bottom {
+    .bottom ul {
+            display: flex;
+            flex-wrap: wrap;
         li {
             border-bottom: 1px solid #ccc;
+            // border-right: 1px solid #ccc;
+            width: 50%;
             // height: rem(300px);
             &:last-child {
-                border-bottom: 1px dashed pink; 
+                // border-bottom: 1px dashed pink; 
+            }
+            &:nth-child(even) {
+                border-right: none;
             }
         }
         

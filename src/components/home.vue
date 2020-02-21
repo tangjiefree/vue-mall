@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="home">
     <Header />
     <Banner :bannerList="bannerList" />
     <div>
@@ -9,6 +9,7 @@
     <Floor :floorList="floor1" :title="floor1_title"/>
     <Floor :floorList="floor2" :title="floor2_title"/>
     <Floor :floorList="floor3" :title="floor3_title"/>
+    <Recommend :recommend="recommend" />
   </div>
 </template>
 
@@ -18,11 +19,12 @@ import Header from './component/Header';
 import Banner from './component/banner';
 import Floor from './component/floor';
 import HotGoods from './component/hotGoods';
+import Recommend from './component/recommend';
 import {Url} from '../serverApi.config';
 
 export default {
   name: 'HelloWorld',
-  components: { Header, Banner, Floor, HotGoods },
+  components: { Header, Banner, Floor, HotGoods, Recommend },
   data() {
     return {
       bannerList: [],
@@ -34,6 +36,7 @@ export default {
       floor3: [],
       floor3_title: '',
       HotGoods: [],
+      recommend: []
     };
   },
   mounted() {
@@ -53,6 +56,7 @@ export default {
           this.floor2_title = data.floorName.floor2;
           this.floor3_title = data.floorName.floor3;
           this.HotGoods = data.hotGoods;
+          this.recommend = data.recommend;
         }
     });
   }
@@ -61,8 +65,10 @@ export default {
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style lang="scss" scoped>
-.advertes {
-  width:100%;
-  display: block;
+.home {
+  .advertes {
+    width:100%;
+    display: block;
+  }
 }
 </style>

@@ -27,12 +27,14 @@
                 立即登录
                 </van-button>
             </div>
+            <router-link class="toregist" :to="{name: 'register'}">还没有账号？</router-link>
         </van-form>
     </div>
 </template>
 
 <script>
 import { Url } from '@/serverApi.config.js';
+import { Toast } from 'vant';
     export default {
         name: 'login',
         data() {
@@ -55,12 +57,17 @@ import { Url } from '@/serverApi.config.js';
                     }
                 })
                 .then(res => {
-                    this.$store.commit('setToken', res.msg);
-                    if(this.$route.query.redirect) {
-                        this.$router.replace({path: this.$route.query.redirect})
+                    if(res.status && res.msg !== null) {
+                        this.$store.commit('setToken', res.msg);
+                        if(this.$route.query.redirect) {
+                            this.$router.replace({path: this.$route.query.redirect})
+                        }
+                        else {
+                            this.$router.replace({path: '/'})
+                        }
                     }
                     else {
-                        this.$router.replace({path: '/'})
+                        Toast('请核实用户名和密码')
                     }
                 })
             },
@@ -73,5 +80,11 @@ import { Url } from '@/serverApi.config.js';
 
 <style lang="scss" scoped>
 @import '../assets/style/global.scss';
-
+.login {
+    .toregist {
+        float: right;
+        font-size: rem(24px);
+        color: blue;
+    }
+}
 </style>

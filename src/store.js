@@ -77,6 +77,7 @@ const store = new Vuex.Store({
                 }
                 else {
                     // 不存在,那就增加到购物车
+                    console.log(value)
                     store.commit('addGoods',value);
                     reject();
                 }

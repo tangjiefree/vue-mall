@@ -25,11 +25,12 @@
 
 <script>
 import { mapState } from 'vuex';
+import { Toast } from 'vant';
     export default {
         name: 'center',
         data() {
             return {
-                list: ['地址管理', '我的订单', '联系我们', '注销登陆', '注测用户']
+                list: ['地址管理', '我的订单', '联系我们', '退出登陆']
             }
         },
         computed: {
@@ -43,12 +44,18 @@ import { mapState } from 'vuex';
             },
             action(index) {
                 switch(index) {
+                    case 0:
+                        Toast('开发中')
+                        break;
+                    case 1:
+                        Toast('开发中')
+                        break;
+                    case 2:
+                        Toast('联系邮箱：tangjiefree@outlook.com')
+                        break;
                     case 3:
                         this.$store.commit('removeToken');
                         this.$router.push({path: '/'})
-                        break;
-                    case 4:
-                        this.$router.push({path: 'register'});
                         break;
                     default: 
                         return;
