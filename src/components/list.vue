@@ -22,6 +22,13 @@
         </ul>
         <ul class="goodslist">
             <van-pull-refresh success-text="刷新成功" v-model="isLoading" @refresh="loadTop">
+              <van-list
+                  v-model="loading"
+                  :immediate-check="false"
+                  :finished="finished"
+                  finished-text="没有更多了"
+                  @load="onLoad"
+                >
                 <router-link
                   tag="li"
                   :to="{name: 'goodsdetail', params: {goodsId: item.ID}}"
@@ -37,6 +44,7 @@
                     <span>￥{{item.ORI_PRICE}}元</span>
                   </div>
                 </router-link>
+              </van-list>
           </van-pull-refresh>
         </ul>
       </section>
@@ -62,10 +70,12 @@ export default {
       errorImg: 'this.src="' + require("@/assets/images/errorimg.png") + '"',
       deepSubID: "",
       isLoading: false,
+      loading: false,
+      finished: false
     };
   },
   created() {
-    },
+  },
   mounted() {
     this.getCategory();
     // 设置容器高度
@@ -111,34 +121,63 @@ export default {
     },
     // 点击小类获取小类商品信息
     deepSub(index, ID) {
+      this.pageNum = 1;
+      this.finished = false;
       this.subIndex = index;
-      this.deepList = [];
       this.deepSubID = ID;
+      this.deepList = [];
+      this.onLoad();
+      // this.deepList = [];
+      // this.$http({
+      //   url: Url.deepSub,
+      //   method: "post",
+      //   data: {
+      //     pageNum: this.pageNum++,
+      //     Num: this.Num,
+      //     ID: ID
+      //   }
+      // }).then(res => {
+      //   console.log(res);
+      //   if (res.status && res.data.length) {
+      //     this.deepList = this.deepList.concat(res.data);
+      //   } else {
+      //     this.finished = true
+      //     Toast('获取数据失败');
+      //   }
+      //   this.isLoading = false;
+      // });
+    },
+    onLoad() {
       this.$http({
         url: Url.deepSub,
         method: "post",
         data: {
-          pageNum: this.pageNum++,
+          pageNum: this.pageNum,
           Num: this.Num,
-          ID: ID
+          ID: this.deepSubID
         }
       }).then(res => {
         console.log(res);
         if (res.status && res.data.length) {
+          this.pageNum++;
           this.deepList = this.deepList.concat(res.data);
-          this.isdown = false;
         } else {
+          this.finished = true
           Toast('获取数据失败');
         }
+        this.loading = false;
       });
     },
     goback() {
       this.$router.go(-1);
     },
+    // 下拉刷新
     loadTop() {
+      this.isLoading=false;
+      this.finished = false;
+      this.deepList=[]
       this.pageNum = 1;
-      this.deepSub(this.subIndex, this.categorySub[this.subIndex].ID);
-      this.isLoading = false;
+      this.onLoad()
     },
   }
 };
