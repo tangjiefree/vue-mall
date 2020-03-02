@@ -3,18 +3,18 @@
         <h2 class="title">{{title}}</h2>
         <div class="up">
                 <div class="left">
-                    <router-link :to="{name: 'goodsdetail', params: {goodsId: floor1_id}}">
+                    <router-link :to="{name: 'goodsdetail', query: {goodsId: floor1_id}}">
                         <img :src="floor1" alt="">
                     </router-link>
                 </div>
             <div class="right">
                 <div class="upfloor">
-                    <router-link :to="{name: 'goodsdetail', params: {goodsId: floor2_id}}">
+                    <router-link :to="{name: 'goodsdetail', query: {goodsId: floor2_id}}">
                         <img :src="floor2" alt="">
                     </router-link>
                 </div>
                 <div class="downfloor">
-                    <router-link :to="{name: 'goodsdetail', params: {goodsId: floor3_id}}">
+                    <router-link :to="{name: 'goodsdetail', query: {goodsId: floor3_id}}">
                         <img :src="floor3" alt="">
                     </router-link>
                 </div>
@@ -23,7 +23,7 @@
         <div class="bottom">
             <ul>
                 <li v-for="(item, index) in sliceList" :key="item.goodsId">
-                    <router-link :to="{name: 'goodsdetail', params: {goodsId: item.goodsId}}">
+                    <router-link :to="{name: 'goodsdetail', query: {goodsId: item.goodsId}}">
                         <img :src="item.image" alt="">
                     </router-link>
                 </li>

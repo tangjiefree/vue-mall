@@ -4,7 +4,7 @@
         <swiper :options="swiperOptions">
             <swiperSlide class="slides" v-for="(item, index) in hotGoods" :key="index">
               <router-link
-                :to="{name: 'goodsdetail', params:{goodsId: item.goodsId}}"
+                :to="{name: 'goodsdetail', query:{goodsId: item.goodsId}}"
                 tag="div"
               >
                 <div class="image">

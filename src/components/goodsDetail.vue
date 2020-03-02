@@ -63,8 +63,9 @@ import { mapState } from 'vuex';
             }
         },
         created() {
-            if(this.$route.params.goodsId) {
-                this.goodsId = this.$route.params.goodsId;
+            console.log(this.$route)
+            if(this.$route.query.goodsId) {
+                this.goodsId = this.$route.query.goodsId;
             }
         },
         computed: {

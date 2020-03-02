@@ -7,6 +7,19 @@
 <script>
 export default {
   name: 'App',
+  mounted() {
+  //   document.body.addEventListener(
+  //   'touchmove',
+  //   function(e) {
+  //     if (e._isScroller) return
+  //     // 阻止默认事件
+  //     e.preventDefault()
+  //   },
+  //   {
+  //     passive: false
+  //   }
+  // )
+  }
 };
 </script>
 

@@ -31,7 +31,7 @@
                 >
                 <router-link
                   tag="li"
-                  :to="{name: 'goodsdetail', params: {goodsId: item.ID}}"
+                  :to="{name: 'goodsdetail', query: {goodsId: item.ID}}"
                   v-for="(item, index) in deepList"
                   :key="index"
                 >

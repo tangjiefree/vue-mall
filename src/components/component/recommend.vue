@@ -2,7 +2,7 @@
     <div class="recommend">
         <h3>热门推荐</h3>
         <ul>
-            <router-link tag="li" :to="{name: 'goodsdetail', params:{goodsId: item.goodsId}}" v-for="(item, index) in recommend" :key="index">
+            <router-link tag="li" :to="{name: 'goodsdetail', query:{goodsId: item.goodsId}}" v-for="(item, index) in recommend" :key="index">
                 <img :src="item.image" alt="">
                 <span>{{item.goodsName}}</span>
                 <span>{{item.price | newPrice}}元</span>
