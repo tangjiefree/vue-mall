@@ -13,7 +13,7 @@
   "dependencies": {
     "axios": "^0.19.2",
     "glob": "^7.1.6",
-    "swiper": "^5.3.1",
+    "swiper": "^6.5.1",
     "vant": "^2.5.1",
     "vue": "^2.5.2",
     "vue-awesome-swiper": "^3.1.3",
